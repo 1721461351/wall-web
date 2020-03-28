@@ -4,61 +4,13 @@
       <el-header>
         <!-- 导航栏 -->
         <home-header></home-header>
+        <!-- <slide-and-type></slide-and-type> -->
       </el-header>
 
       <!-- 轮播图+分类 -->
-      <div class="slide_and_type">
-        <template>
-          <el-carousel indicator-position="inside" class="slideshow" height="250px">
-            <el-carousel-item v-for="item in slideShow" :key="item">
-              <h3>
-                <img :src="item" alt="沈农" />
-              </h3>
-            </el-carousel-item>
-          </el-carousel>
-        </template>
-        <div>
-          <!-- 分类标签 -->
-          <div class="type">
-            <i class="el-icon-info">分类</i>
+  
 
-            <el-tag>标签一</el-tag>
-            <el-tag type="success">标签二</el-tag>
-            <el-tag type="info">标签三</el-tag>
-            <el-tag type="warning">标签四</el-tag>
-            <el-tag type="danger">标签五</el-tag>
-            <el-tag>标签一</el-tag>
-            <el-tag type="success">标签二</el-tag>
-            <el-tag type="info">标签三</el-tag>
-            <el-tag type="warning">标签四</el-tag>
-            <el-tag type="danger">标签五</el-tag>
-            <el-tag>标签一</el-tag>
-            <el-tag type="success">标签二</el-tag>
-            <el-tag type="info">标签三</el-tag>
-            <el-tag type="warning">标签四</el-tag>
-            <el-tag type="danger">标签五</el-tag>
-          </div>
-        </div>
-
-        <!-- 推荐阅读 -->
-        <div class="recommend-read">
-          <div>推荐阅读:</div>
-          <ul>
-            <li>
-              <i class="el-icon-reading"></i>
-              <a href="#">新手到站长的必经之路</a>
-            </li>
-            <li>
-              <i class="el-icon-reading"></i>
-              <a href="#">新手到站长的必经之路</a>
-            </li>
-          </ul>
-        </div>
-
-        <!-- 网站信息 -->
-        <div class="wall-info">网站信息</div>
-      </div>
-
+      <Slide-and-type></Slide-and-type>
       <!-- 写文章 -->
       <div class="articles_and_recommends">
         <article class="article">
@@ -136,7 +88,25 @@
         </article>
       </div>
 
-      <el-footer>Footer</el-footer>
+      <!-- 分   页 -->
+      <div class="block">
+        <!-- <span class="demonstration">页数较少时的效果</span> -->
+        <el-pagination layout="prev, pager, next" :total="50"></el-pagination>
+      </div>
+
+      <!-- <el-footer></el-footer> -->
+
+      <div class="foot">
+        <p class="foot1"><span><a href="#">蜀ICP备 19004343</a></span>
+        <span>|</span>
+        <span> 版权所有 © 2017 - 2020 </span>
+        <span>|</span>
+        <span>以商业目的使用本网站内容需获许可，非商业目的使用授权遵循CC BY-NC 4.0</span>
+        </p>
+        <p class="foot2">
+          <span>All content is made available under the CC BY-NC 4.0 for non-commercial use. Commercial use of this content is prohibited without explicit permission.</span>
+        </p>
+      </div>
     </el-container>
   </div>
 </template>
@@ -147,7 +117,7 @@
 
 <script>
 import HomeHeader from "@/components/pages/head/HomeHeader";
-
+import SlideAndType from "@/components/pages/content/SlideAndType"
 export default {
   name: "Home",
 
@@ -161,7 +131,8 @@ export default {
   },
   // 小写，小写啊
   components: {
-    HomeHeader
+    HomeHeader,
+    SlideAndType
   },
   methods: {}
 };
@@ -192,7 +163,7 @@ export default {
 .el-main {
   background-color: #f8f8f8;
   color: #333;
-  text-align: center;
+  /* text-align: center; */
   line-height: 60px;
 }
 
@@ -216,46 +187,7 @@ body > .el-container {
   line-height: 320px;
 }
 
-/* 滚动条 */
-.el-carousel__item h3 {
-  color: #475669;
-  font-size: 18px;
-  opacity: 0.75;
-  line-height: 300px;
-  margin: 0;
-}
 
-.el-carousel__item h3 img {
-  margin-top: 20px;
-}
-
-.slide_and_type {
-  width: 1200px;
-  height: 260px;
-  margin: 5px auto;
-}
-
-.slideshow {
-  width: 850px;
-  float: left;
-  /* margin-top: 30px; */
-  /* margin-left: 50px; */
-}
-.type {
-  width: 340px;
-  height: 220px;
-  /* border: 1px solid blue; */
-  float: right;
-  margin-top: 20px;
-  background: #f8f8f8;
-}
-
-.el-tag {
-  margin: 5px;
-}
-.el-icon-info {
-  margin: 5px;
-}
 
 /* 写文章 */
 .articles_and_recommends {
@@ -415,4 +347,31 @@ ul {
   border: 1px solid red;
   float: right;
 }
+
+/* 分页 */
+.block {
+  margin-top: 20px;
+  margin-left: 75px;
+}
+
+/* 底部 */
+.foot{
+  margin-top: 20px;
+  width: 100%;
+  height: 90px;
+  background:#f8f8f8;
+}
+
+.foot1,.foot2{
+  text-align: center;
+}
+.foot1 span{
+  padding: 0 5px;
+}
+.foot1 a{
+  text-decoration: none;
+  color: #777777;
+}
+
+
 </style>
