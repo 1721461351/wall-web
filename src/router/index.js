@@ -5,6 +5,7 @@ import ElementUI from 'element-ui';
 import Home from '@/components/pages/Home'
 import BlogContent from '@/components/pages/BlogContent'
 import WriterBlog from '@/components/pages/WriterBlog'
+import Login from '@/components/pages/Login'
 
 import mavonEditor from 'mavon-editor'
 // import 'element-ui/lib/theme-chalk/index.css'
@@ -32,6 +33,11 @@ export default new Router({
       path: '/writerblog',
       name: 'WriterBlog',
       component: WriterBlog
+    },
+    {
+      path: '/login',
+      name: 'Login',
+      component: Login
     }
   ]
 })

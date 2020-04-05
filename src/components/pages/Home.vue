@@ -1,6 +1,7 @@
 <template>
   <div>
-    <el-container>
+    <!-- <el-container> -->
+      <div>
       <el-header>
         <!-- 导航栏 -->
         <home-header></home-header>
@@ -23,7 +24,21 @@
         <Tag></Tag>
       </div>-->
       <slide-and-type></slide-and-type>
-
+     
+   
+    <!-- 网站数据 -->
+      <div class="data">
+        <div class="data-title">网站信息</div>
+        <ul>
+          <li>文章总数:</li>
+          <li>标签总数:</li>
+          <li>分类总数:</li>
+          <li>留言数量:</li>
+          <li>在线人数:</li>
+          <li>运行天数:</li>
+          <li>最后更新时间:</li>
+        </ul>
+      </div>
       <!-- 写文章+分页-->
       <blogs-list></blogs-list>
 
@@ -31,7 +46,8 @@
 
       <!-- foot -->
       <home-foot></home-foot>
-    </el-container>
+ 
+</div>      
   </div>
 </template>
 
@@ -109,14 +125,14 @@ body > .el-container {
   margin-bottom: 40px;
 }
 
-.el-container:nth-child(5) .el-aside,
+/* .el-container:nth-child(5) .el-aside,
 .el-container:nth-child(6) .el-aside {
   line-height: 260px;
 }
 
 .el-container:nth-child(7) .el-aside {
   line-height: 320px;
-}
+} */
 
 /* 写文章 */
 .articles_and_recommends {
@@ -229,7 +245,7 @@ body > .el-container {
   text-decoration: none;
 }
 /* 清除浮动 */
-.clearfix:before,
+/* .clearfix:before,
 .clearfix:after {
   display: table;
   content: "";
@@ -239,7 +255,7 @@ body > .el-container {
 }
 .clearfix {
   *zoom: 1;
-}
+} */
 /* 文章之间间距 */
 .article {
   margin-bottom: 20px;
@@ -299,7 +315,21 @@ ul {
   line-height: 30px;
   text-decoration: none;
 }
-.scrolltext-content span{
+.scrolltext-content span {
   padding: 5px;
+}
+/* 网站统计 */
+.data{
+  width: 340px;
+  height: 200px;
+  /* background: red; */
+    background: #f8f8f8;
+
+  margin-right: 60px;
+  /* margin: 0 auto;  */
+  /* float: right !important; */
+  /* margin-right: 500px; */
+  float: right;
+  /* right: 0px; */
 }
 </style>

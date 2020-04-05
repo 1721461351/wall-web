@@ -1,9 +1,11 @@
 <template>
   <div class="mavonEdit">
-    写博客:
-    <mavon-editor v-model="value" 
-    :toolbars="toolbars"
     
+
+
+    <div class="test">写博客</div>
+        <mavon-editor v-model="value" 
+    :toolbars="toolbars"
     />
   </div>
 </template>
@@ -60,5 +62,15 @@ export default {
     width: 80%;
     height: 50%;
     min-width: 200px !important;
+}
+.test{
+  width: 200px;
+  height: 100px;
+  background: red;
+  /* margin: 0 auto;  */
+  /* float: right !important; */
+  /* margin-right: 500px; */
+  float: right;
+  /* right: 0px; */
 }
 </style>
