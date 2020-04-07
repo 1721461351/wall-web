@@ -6,15 +6,16 @@
           :model="ruleForm"
           status-icon
           :rules="rules"
-          ref="ruleForm"
+          ref="ruleFormRef"
           label-width="50px"
           class="demo-ruleForm"
         >
+          <!-- prop:校验规则，前面不用加rules -->
           <el-form-item label prop="username">
             <el-input
-              type="password"
               v-model="ruleForm.username"
               autocomplete="off"
+              prefix-icon="iconfont icon-denglu"
               placeholder="账号"
             ></el-input>
           </el-form-item>
@@ -23,6 +24,7 @@
               type="password"
               v-model="ruleForm.checkPass"
               autocomplete="off"
+              prefix-icon="iconfont icon-mima"
               placeholder="密码"
             ></el-input>
           </el-form-item>
@@ -30,8 +32,10 @@
             <el-input v-model.number="ruleForm.age" placeholder="验证码"></el-input>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" @click="submitForm('ruleForm')">提交</el-button>
-            <el-button @click="resetForm('ruleForm')">重置</el-button>
+            <div class="btn-submit">
+              <el-button type="primary" @click="submitForm('ruleFormRef')">提交</el-button>
+              <el-button @click="resetForm('ruleFormRef')">重置</el-button>
+            </div>
           </el-form-item>
         </el-form>
       </div>
@@ -81,13 +85,35 @@ export default {
     return {
       ruleForm: {
         username: "",
+        password: "",
         checkPass: "",
         age: ""
       },
       rules: {
-        username: [{ validator: validatePass, trigger: "blur" }],
-        checkPass: [{ validator: validatePass2, trigger: "blur" }],
-        age: [{ validator: checkAge, trigger: "blur" }]
+        //   这里对应el-form-item的prop属性
+        username: [
+          {
+            // 校验规则，用户名不能为空
+            required: true,
+            message: "请输入用户名",
+            trigger: "blur"
+          },
+          //   校验规则2
+          { min: 3, max: 10, message: "长度在 3 到 10 个字符", trigger: "blur" }
+        ],
+        password: [
+          {
+            // 校验规则，密码不能为空
+            required: true,
+            message: "请输入密码",
+            trigger: "blur"
+          },
+          //   校验规则2
+          { min: 3, max: 10, message: "密码长度在 3 到 10 个字符", trigger: "blur" }
+        ],
+        // username: [{ validator: validatePass, trigger: "blur" }],
+        // checkPass: [{ validator: validatePass2, trigger: "blur" }],
+        // age: [{ validator: checkAge, trigger: "blur" }]
       }
     };
   },
@@ -97,14 +123,33 @@ export default {
         if (valid) {
           alert("submit!");
         } else {
-          console.log("error submit!!");
+          console.log("error submit !!");
           return false;
         }
       });
     },
-    resetForm(formName) {
+resetForm:function(formName){
+     console.log(this)
+
       this.$refs[formName].resetFields();
-    }
+},
+
+// resetForm:(formName)=>{
+//     console.log(this)
+
+//       this.$refs[formName].resetFields();
+// }
+    // resetForm(formName) {
+    //             console.log(this)
+
+    //   this.$refs[formName].resetFields();
+    // },
+    // ruleFormRefReset:()=>{
+    //     console.log(this)
+    // },
+    // ruleFormRefReset(){
+    //     console.log(this)
+    // }
   }
 };
 </script>
@@ -113,9 +158,10 @@ export default {
 body {
   margin: 0;
   padding: 0;
- background: url(https://cn.bing.com/th?id=OHR.PascuaFlorida_EN-US1819624171_1920x1080.jpg&rf=LaDigue_1920x1080.jpg&pid=hp) no-repeat;
-  background-size:100% 100%;
-   background-attachment:fixed;
+  background: url(https://cn.bing.com/th?id=OHR.PascuaFlorida_EN-US1819624171_1920x1080.jpg&rf=LaDigue_1920x1080.jpg&pid=hp)
+    no-repeat;
+  background-size: 100% 100%;
+  background-attachment: fixed;
 }
 .app {
   width: 400px;
@@ -132,5 +178,12 @@ body {
   margin: 0 auto;
   margin-top: 50px;
   margin-left: 0px;
+}
+/* 按钮 */
+/* css3中的弹性盒子 */
+.btn-submit {
+  display: flex;
+  box-sizing: border-box;
+  justify-content: center;
 }
 </style>
