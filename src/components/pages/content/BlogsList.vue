@@ -1,13 +1,14 @@
 <template>
   <div>
     <!-- 写文章 -->
-    
+
     <div class="articles_and_recommends">
-      <article class="article">
+      <div >
+      <article class="article" v-for="blog in list" :key="blog.blogId">
         <!-- 文章图片 -->
         <div class="article-img">
           <a href="https://jwc.syau.edu.cn">
-            <img src="http://oss.94rg.com/oneblog/20200321162655133.png-94rg001" alt="必经之路" />
+            <img :src="blog.blogImage" alt="" width="150px" height="150px"/>
           </a>
           <!-- 文章分类标签 -->
           <span class="article-type">
@@ -17,10 +18,10 @@
         <!-- 文章标题和内容 -->
         <div class="article-header">
           <h4>
-            <a href="https://jwc.syau.edu.cn">新手到站长的必经之路</a>
+            <a href="https://jwc.syau.edu.cn">{{blog.blogTitle}}</a>
           </h4>
           <!-- 文章内容 -->
-          <div class="article-content">很容易被误诊为心脏病发作。。</div>
+          <div class="article-content">{{blog.blogContent}}</div>
         </div>
 
         <!-- 文章其他内容 -->
@@ -28,9 +29,9 @@
         <div class="other">
           <div class="article-other">
             <div class="artcle-date">2020-03-24</div>
-            <div class="article-read">浏览(10)</div>
+            <div class="article-read">浏览({{blog.readNum}})</div>
             <div class="article-comment">评论(1)</div>
-            <div class="article-zan">赞(7)</div>
+            <div class="article-zan">赞({{blog.likeNum}})</div>
             <!-- 阅读全文 -->
             <div class="article-more">
               <a href="#">阅读全文</a>
@@ -38,79 +39,9 @@
           </div>
         </div>
       </article>
- <article class="article">
-        <!-- 文章图片 -->
-        <div class="article-img">
-          <a href="https://jwc.syau.edu.cn">
-            <img src="http://oss.94rg.com/oneblog/20200321162655133.png-94rg001" alt="必经之路" />
-          </a>
-          <!-- 文章分类标签 -->
-          <span class="article-type">
-            <a href="#">站长之家</a>
-          </span>
-        </div>
-        <!-- 文章标题和内容 -->
-        <div class="article-header">
-          <h4>
-            <a href="https://jwc.syau.edu.cn">新手到站长的必经之路</a>
-          </h4>
-          <!-- 文章内容 -->
-          <div class="article-content">很容易被误诊为心脏病发作。。</div>
-        </div>
+      </div>
 
-        <!-- 文章其他内容 -->
-        <!-- 日期，浏览，评论，赞 -->
-        <div class="other">
-          <div class="article-other">
-            <div class="artcle-date">2020-03-24</div>
-            <div class="article-read">浏览(10)</div>
-            <div class="article-comment">评论(1)</div>
-            <div class="article-zan">赞(7)</div>
-            <!-- 阅读全文 -->
-            <div class="article-more">
-              <a href="#">阅读全文</a>
-            </div>
-          </div>
-        </div>
-      </article>
-
-      <article class="article">
-        <!-- 文章图片 -->
-        <div class="article-img">
-          <a href="https://jwc.syau.edu.cn">
-            <img src="http://oss.94rg.com/oneblog/20200321162655133.png-94rg001" alt="必经之路" />
-          </a>
-          <!-- 文章分类标签 -->
-          <span class="article-type">
-            <a href="#">站长之家</a>
-          </span>
-        </div>
-        <!-- 文章标题和内容 -->
-        <div class="article-header">
-          <h4>
-            <a href="https://jwc.syau.edu.cn">新手到站长的必经之路</a>
-          </h4>
-          <!-- 文章内容 -->
-          <div
-            class="article-content"
-          >很容易被误诊为心脏病发作。很容易被误诊为心脏病发作。当深层情绪引起过度焦虑导致胸痛或呼吸短促等症状时，就容易出现破碎心脏综合症。这往往更容易发生在女性身上，很容易被误诊为心脏病发作。</div>
-        </div>
-
-        <!-- 文章其他内容 -->
-        <!-- 日期，浏览，评论，赞 -->
-        <div class="other">
-          <div class="article-other">
-            <div class="artcle-date">2020-03-24</div>
-            <div class="article-read">浏览(10)</div>
-            <div class="article-comment">评论(1)</div>
-            <div class="article-zan">赞(7)</div>
-            <!-- 阅读全文 -->
-            <div class="article-more">
-              <a href="#">阅读全文</a>
-            </div>
-          </div>
-        </div>
-      </article>
+ 
     </div>
     <!-- 分   页 -->
     <div class="block">
@@ -122,8 +53,27 @@
 
 <script>
 export default {
-  name: "BlogsList"
-};
+  props: {
+   list:Array
+  },
+  name: 'BlogsList',
+  data () {
+    return {
+      blog: '',
+    }
+  },
+
+
+
+  methods: {
+    // getBlogList(){
+    //   axios.get('https://autumnfish.cn/api/joke/list?num=3').then(function (response) {
+    //     console.log(response)
+    //   }
+    //   )
+    // }
+  }
+}
 </script>
 
 <style>
@@ -285,7 +235,6 @@ ul {
   border: 1px solid red;
   float: right;
 }
-
 
 /* 分页 */
 .block {

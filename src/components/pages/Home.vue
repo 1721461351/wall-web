@@ -24,8 +24,8 @@
         <Tag></Tag>
       </div>-->
       <slide-and-type></slide-and-type>
-     
-   
+
+
     <!-- 网站数据 -->
       <div class="data">
         <div class="data-title">网站信息</div>
@@ -40,14 +40,14 @@
         </ul>
       </div>
       <!-- 写文章+分页-->
-      <blogs-list></blogs-list>
+      <blogs-list :list="blogList"></blogs-list>
 
       <!-- <el-footer></el-footer> -->
 
       <!-- foot -->
       <home-foot></home-foot>
- 
-</div>      
+
+</div>
   </div>
 </template>
 
@@ -60,7 +60,7 @@ import HomeFoot from "@/components/pages/foot/HomeFoot";
 import Slide from "@/components/pages/content/Slide";
 import Tag from "@/components/pages/content/Tag";
 import BlogsList from "@/components/pages/content/BlogsList";
-
+import axios from 'axios';
 export default {
   name: "Home",
 
@@ -69,8 +69,14 @@ export default {
       slideShow: [
         "https://jwc.syau.edu.cn/img/1.JPG",
         "https://jwc.syau.edu.cn/img/3.jpg"
-      ]
+      ],
+      blogList:[],
     };
+  },
+  mounted() {
+    axios.get("http://localhost:9200/blog/list?page=1&size=5")
+    .then(this.getData);
+    console.log(this.blogList);
   },
   // 小写，小写啊
   components: {
@@ -81,7 +87,16 @@ export default {
     Tag,
     BlogsList
   },
-  methods: {}
+  methods: {
+    getData(response){
+       response = response.data;
+      if (response){
+        // console.log(response);
+        this.blogList = response.dataInfo.contents;
+        // console.log(this.blogList);
+      }
+    }
+  }
 };
 </script>
 

@@ -12,9 +12,7 @@ import mavonEditor from 'mavon-editor'
 // import 'element-ui/lib/theme-chalk/index.css'
 // 不要忘记引入mavonEditor的css样式
 import 'mavon-editor/dist/css/index.css'
-import axios from 'axios'
 Vue.use(Router)
-Vue.use(axios)
 // markerdown的插件
 Vue.use(mavonEditor)
 // Vue.use(ElementUI)
