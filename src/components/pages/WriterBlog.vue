@@ -106,7 +106,6 @@
 
 <script>
 import HomeHeader from "@/components/pages/head/HomeHeader";
-
 export default {
   name: "WriterBlog",
   components: {
