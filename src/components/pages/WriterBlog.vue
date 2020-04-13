@@ -8,12 +8,16 @@
         </a>
       </div>
 
+      
+      <!-- <el-form :model="ruleForm" :rules="rules" ref="ruleFormRef" label-width="100px" class="demo-ruleForm"> -->
+        
+    
       <!-- 文章标题 -->
       <el-input
         class="article-title"
         type="text"
         placeholder="请输入标题"
-        v-model="text"
+        v-model="form.title"
         maxlength="10"
         show-word-limit
       ></el-input>
@@ -32,7 +36,7 @@
     <div class="markdown">
       <!-- markdown界面 -->
       <mavon-editor
-        v-model="value"
+        v-model="form.content"
         style="height: 100%; min-height: 550px; min-width: 200px; z-index: 1500;"
         :toolbars="toolbars"
       />
@@ -43,9 +47,16 @@
       <!-- <el-button type="text" @click="dialogFormVisible = true">打开嵌套表单的 Dialog</el-button> -->
 
       <el-dialog title="发布博客" :visible.sync="dialogFormVisible">
-        <el-form :model="form">
+        <!-- 标签 -->
+        <!-- 注意：prop属性中不要用: -->
+        <el-form :model="form"
+        ref="ruleFormRef"
+        :rules="rules">
           <div class="form-native">请勿发布涉及政治、广告、营销、翻墙、违反国家法律法规等内容</div>
-          <el-form-item label="文章标签" :label-width="formLabelWidth">
+          <el-form-item label="文章标签" 
+          :label-width="formLabelWidth"
+          prop="tagRule"
+          >
             <el-tag
               :key="tag"
               v-for="tag in dynamicTags"
@@ -67,37 +78,37 @@
             <!-- 标签表 -->
             <div class="tag-table">
               <div>
-                <el-checkbox-group v-model="checkedCities" @change="tagChange">
-                  <el-checkbox v-for="tag in tags" :label="tag" :key="tag">{{tag}}</el-checkbox>
+                <el-checkbox-group v-model="dynamicTags" @change="tagChange">
+                  <el-checkbox v-for="(tag,index) in tags" :label="tag" :key="index">{{tag}}</el-checkbox>
                 </el-checkbox-group>
               </div>
             </div>
             <!-- <el-input v-model="form.name" autocomplete="off"></el-input> -->
           </el-form-item>
           <!-- 循环要写在option中，而不是select中 -->
-          <el-form-item label="文章类型" :label-width="formLabelWidth">
-            <el-select v-model="form.region" placeholder="请选择">
+          <el-form-item label="文章类型" :label-width="formLabelWidth" prop="category">
+            <el-select v-model="form.category" placeholder="请选择类别">
               <el-option
-                v-for="(category,index) in categoryList"
-                :key="index"
-                :label="category"
-                :value="index"
+                v-for="category in categoryList"
+                :key="category.categoryId"
+                :label="category.categoryName"
+                :value="category.categoryId"
               ></el-option>
               <!-- <el-option :label="category" value="beijing"></el-option> -->
             </el-select>
           </el-form-item>
           <!-- 发布形式 -->
-          <el-form-item label="发布形式:" :label-width="formLabelWidth">
-            <el-radio-group v-model="radio">
-              <el-radio :label="3">公开</el-radio>
-              <el-radio :label="6">私密</el-radio>
-              <el-radio :label="9">粉丝可见</el-radio>
+          <el-form-item label="发布形式:" :label-width="formLabelWidth" prop="pubishStatus">
+            <el-radio-group v-model="form.publishStatus">  
+              <el-radio :label="0">私密</el-radio>
+              <el-radio :label="1">公开</el-radio>
+              <el-radio :label="2">粉丝可见</el-radio>
             </el-radio-group>
           </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
           <el-button @click="dialogFormVisible = false">取 消</el-button>
-          <el-button type="success" @click="dialogFormVisible = false">发布文章</el-button>
+          <el-button type="success" @click="publishBlog1('ruleFormRef')" :plain="true">发布文章</el-button>
         </div>
       </el-dialog>
     </div>
@@ -106,15 +117,20 @@
 
 <script>
 import HomeHeader from "@/components/pages/head/HomeHeader";
+import axios from 'axios';
 export default {
   name: "WriterBlog",
   components: {
     HomeHeader
   },
   methods: {
+
+
     tagChange(value) {
-      console.log(value);
+      console.log("value",value);
+      console.log("dyn",this.dynamicTags)
       this.dynamicTags = value;
+      // console.log(dynamicTags.tagName);
       // this.checkedCities = value;
     },
     publishBlog() {
@@ -122,6 +138,46 @@ export default {
       console.log(this);
     },
 
+      // 发布文章终极
+      publishBlog1(forName){
+        console.log("title",this.form.title);
+          if(this.form.title==""){
+            this.$message({
+              message:"请输入标题!",
+              type:"warning"
+            });
+            return;
+          }
+          if(this.form.content==""){
+            this.$message({
+              message:"请输入内容!",
+              type:"warning"
+            });
+            return;
+          }
+        console.log("this",this);
+        this.$refs[forName].validate((valid)=>{
+        
+          if(valid){
+            alert("submit");
+            this.form.selectTag = this.dynamicTags;
+           this.dialogFormVisible = false;
+          //  发布博客
+          axios.post("http://127.0.0.1:9200/blog/writerblog",this.form)
+          .then(response=>{
+            console.log(response);
+          })
+          .catch(error=>{
+            console.log("提交失败",error);
+          })
+            console.log("form",this.form);
+          }else{
+            alert("error");
+            return false;
+          }
+        })
+        console.log(this.form);
+      },
     handleClose(tag) {
       this.dynamicTags.splice(this.dynamicTags.indexOf(tag), 1);
     },
@@ -138,18 +194,41 @@ export default {
       if (inputValue) {
         this.dynamicTags.push(inputValue);
         this.tags.push(inputValue);
+        // 把内容加到表单中
+        // this.form.selectTag.push(inputValue);
       }
       this.inputVisible = false;
       this.inputValue = "";
     }
   },
+  mounted(){
+      axios.get('http://127.0.0.1:9200/category/list')
+      .then((res)=>{
+        console.log(res);
+        res = res.data;
+        this.categoryList = res.dataInfo;
+      });
+      // 这里参数要这么传递
+      axios.get('http://127.0.0.1:9200/tag/list',{params:{
+        username:this.form.username
+      }
+      })
+      .then((res)=>{
+        console.log("tag",res);
+        this.tags = res.data.dataInfo;
+      });
+  },
   data() {
     return {
+      dynamicTag:{
+        
+      },
       // 是否公开
       radio:"",
       // 分类
-      categoryList: ["原创", "转载", "翻译"],
+      categoryList: [],
       tags: ["标签一", "标签二", "标签三"],
+      // tags:[],
       checkedCities: [],
       // dynamicTags: ["标签一", "标签二", "标签三"],
       // 开始要把dynamicTags置为空
@@ -197,17 +276,52 @@ export default {
 
       dialogFormVisible: false,
       form: {
-        name: "",
-        region: "",
-        date1: "",
-        date2: "",
-        delivery: false,
-        type: [],
-        resource: "",
+        username:"2016188023",
+        selectTag:[],
+        content:"",
+        // radio:"",
+        publishStatus:"",
+        title:"",
+        tag:[],
+        // name: "",
+        category:"",
+        // date1: "",
+        // date2: "",
+        // delivery: false,
+        // type: [],
+        // resource: "",
         desc: ""
+      },
+      // 表单验证
+      rules:{
+        category:[
+          {required: true, message: '请选择博客类别', trigger: 'change'}
+        ],
+        publishStatus:[
+          {required: true, message: '请选择发布形式', trigger: 'change'}
+        ],
+        tagRule:
+        [
+          //  { 
+          //    validator: (rule,value)=>value==='xiaohei',
+          //  message:'输入有误',
+          //  trigger: 'blur' },
+          //  {required:true,message:'请输入标签',trigger:'change'}
+        ]
       },
       formLabelWidth: "120px"
     };
+
+    var isRepetitiveTag = (rule,value,callback)=>{
+      alert("????");
+      console.log("tagValue",value);
+      if (value === '') {
+        
+      }else{
+      callback();
+
+      }
+    }
   }
 };
 </script>
