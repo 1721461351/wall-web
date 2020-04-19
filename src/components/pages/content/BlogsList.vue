@@ -7,18 +7,18 @@
       <article class="article" v-for="blog in list" :key="blog.blogId">
         <!-- 文章图片 -->
         <div class="article-img">
-          <a href="https://jwc.syau.edu.cn">
+          <a :href="'/blogContent/'+blog.blogId">
             <img :src="blog.blogImage" alt="" width="150px" height="150px"/>
           </a>
           <!-- 文章分类标签 -->
           <span class="article-type">
-            <a href="#">站长之家</a>
+            <a href="#">{{blog.category.categoryName}}</a>
           </span>
         </div>
         <!-- 文章标题和内容 -->
         <div class="article-header">
           <h4>
-            <a href="https://jwc.syau.edu.cn">{{blog.blogTitle}}</a>
+            <a :href="'/blogContent/'+blog.blogId">{{blog.blogTitle}}</a>
           </h4>
           <!-- 文章内容 -->
           <div class="article-content">{{blog.blogContent}}</div>
@@ -28,13 +28,14 @@
         <!-- 日期，浏览，评论，赞 -->
         <div class="other">
           <div class="article-other">
+            <div class="article-username">{{blog.username}}</div>
             <div class="artcle-date">2020-03-24</div>
             <div class="article-read">浏览({{blog.readNum}})</div>
             <div class="article-comment">评论(1)</div>
             <div class="article-zan">赞({{blog.likeNum}})</div>
             <!-- 阅读全文 -->
             <div class="article-more">
-              <a href="#">阅读全文</a>
+              <a :href="'/blogContent/'+blog.blogId">阅读全文</a>
             </div>
           </div>
         </div>
@@ -46,7 +47,11 @@
     <!-- 分   页 -->
     <div class="block">
       <!-- <span class="demonstration">页数较少时的效果</span> -->
-      <el-pagination layout="prev, pager, next" :total="50"></el-pagination>
+      <el-pagination layout="prev, pager, next"
+       :total="total*5"
+        :current-page.sync="currentPage"
+        :page-size.sync="pageSize"
+        @current-change="handleCurrentChange"></el-pagination>
     </div>
   </div>
 </template>
@@ -54,18 +59,31 @@
 <script>
 export default {
   props: {
-   list:Array
+   list:Array,
+   total:Number,
+   page:{
+     type:Number,
+     default:1
+   },
+   size:Number
   },
   name: 'BlogsList',
   data () {
     return {
       blog: '',
+      currentPage:this.page,
+      pageSize:this.size
     }
   },
 
 
 
   methods: {
+    handleCurrentChange(currentPage){
+      this.$emit("getCurrentPage",currentPage);
+      // alert("handleCurrentChange");
+      // console.log("handleCurrentChange",val);
+    }
     // getBlogList(){
     //   axios.get('https://autumnfish.cn/api/joke/list?num=3').then(function (response) {
     //     console.log(response)

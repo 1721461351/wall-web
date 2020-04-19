@@ -23,14 +23,36 @@
       ></el-input>
       <div class="head3">
         <!-- 按钮 -->
+        <div>
         <el-button round>保存草稿</el-button>
         <el-button type="success" @click="publishBlog" round>发布文章</el-button>
+        </div>
         <!-- 头像 -->
-        <div class="user-head-img">
+
+<el-dropdown>
+  <span class="el-dropdown-link">
+    <i >
+      <div class="user-head-img">
+        <a href="">
+          <img src="https://profile.csdnimg.cn/0/8/9/3_qq_41346335" height="32" width="32">
+        </a>
+      </div>
+    </i>
+  </span>
+  <el-dropdown-menu slot="dropdown">
+    <el-dropdown-item>博客管理</el-dropdown-item>
+    <el-dropdown-item>我的博客</el-dropdown-item>
+    <el-dropdown-item>退出</el-dropdown-item>
+    <!-- <el-dropdown-item disabled>双皮奶</el-dropdown-item> -->
+    <!-- <el-dropdown-item divided>蚵仔煎</el-dropdown-item> -->
+  </el-dropdown-menu>
+</el-dropdown>
+
+       <!-- <div class="user-head-img">
           <a href>
             <img src="https://profile.csdnimg.cn/0/8/9/3_qq_41346335" height="32" width="32" />
           </a>
-        </div>
+        </div>  -->
       </div>
     </div>
     <div class="markdown">
@@ -116,6 +138,7 @@
 </template>
 
 <script>
+
 import HomeHeader from "@/components/pages/head/HomeHeader";
 import axios from 'axios';
 export default {
@@ -346,6 +369,7 @@ export default {
 .article-title,
 .head3 {
   float: left;
+  box-sizing: border-box;
 }
 /* 管理博客模块开始 */
 .article-manage {
@@ -376,9 +400,29 @@ export default {
 /* 按钮 */
 .head3 {
   padding-left: 16px;
-
-  margin-top: 8px;
+/* background: red; */
+  /* margin-top: 8px; */
 }
+
+.head3 div{
+  /* padding-bottom: 10px; */
+  display: inline-block;
+  margin-bottom: -2px;
+  height: 40px;
+}
+/* 头像下拉框 */
+.el-dropdown-link {
+  /* border: 1px solid red; */
+    cursor: pointer;
+    color: #409EFF;
+    display: inline-block;
+    padding-left: 6px;
+    /* padding-top: 20px; */
+    margin-bottom: -6px;
+    /* width: 40px; */
+    /* height: 40px; */
+  }
+
 /* 头像 */
 .user-head-img {
   float: right;
@@ -386,12 +430,14 @@ export default {
 }
 
 .user-head-img img {
-  margin-top: 3px;
-  padding-left: 16px;
+  /* border: 1px solid greenyellow; */
+  padding-top: 10px;
+  /* padding-left: 16px; */
   border-radius: 50%;
-  width: 24;
-  height: 24;
+  width: 32;
+  height: 32;
   display: block;
+  /* position: relative; */
   /* padding: 10px; */
 }
 /* 按钮+头像模块结束 */

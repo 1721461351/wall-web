@@ -6,6 +6,7 @@ import Home from '@/components/pages/Home'
 import BlogContent from '@/components/pages/BlogContent'
 import WriterBlog from '@/components/pages/WriterBlog'
 import Login from '@/components/pages/Login'
+import BlogGuard from '@/components/pages/BlogGuard'
 // 引用阿里云的阿里巴巴子良图标库
 // import './assets/fonts/iconfont.css'
 import mavonEditor from 'mavon-editor'
@@ -24,7 +25,7 @@ export default new Router({
       component: Home
     },
     {
-      path: '/1',
+      path: '/blogContent/:blogId',
       name: 'BlogContent',
       component: BlogContent
     },
@@ -38,6 +39,14 @@ export default new Router({
       path: '/login',
       name: 'Login',
       component: Login
+    },
+    // 博客管理
+    {
+      path: '/blogguard',
+      name: 'BlogGuard',
+      component: BlogGuard
     }
-  ]
+  ],
+   // 防止出#号
+   mode:"history"
 })

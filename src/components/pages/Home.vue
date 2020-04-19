@@ -1,10 +1,10 @@
 <template>
   <div>
     <!-- <el-container> -->
-      <div>
+    <div>
       <el-header>
         <!-- 导航栏 -->
-        <home-header></home-header>
+        <home-header @selectbycategoryid="selectByCategoryId"></home-header>
         <!-- <slide-and-type></slide-and-type> -->
       </el-header>
 
@@ -25,8 +25,7 @@
       </div>-->
       <slide-and-type></slide-and-type>
 
-
-    <!-- 网站数据 -->
+      <!-- 网站数据 -->
       <div class="data">
         <div class="data-title">网站信息</div>
         <ul>
@@ -40,14 +39,19 @@
         </ul>
       </div>
       <!-- 写文章+分页-->
-      <blogs-list :list="blogList"></blogs-list>
+      <blogs-list
+        :list="blogList"
+        :total="total"
+        :page="page"
+        :size="size"
+        @getCurrentPage="getpage"
+      ></blogs-list>
 
       <!-- <el-footer></el-footer> -->
 
       <!-- foot -->
       <home-foot></home-foot>
-
-</div>
+    </div>
   </div>
 </template>
 
@@ -60,24 +64,80 @@ import HomeFoot from "@/components/pages/foot/HomeFoot";
 import Slide from "@/components/pages/content/Slide";
 import Tag from "@/components/pages/content/Tag";
 import BlogsList from "@/components/pages/content/BlogsList";
-import axios from 'axios';
+import axios from "axios";
 export default {
   name: "Home",
-
   data() {
     return {
       slideShow: [
         "https://jwc.syau.edu.cn/img/1.JPG",
         "https://jwc.syau.edu.cn/img/3.jpg"
       ],
-      blogList:[],
+      blogList: [],
+      selectContent: {
+        page: 1,
+        size: 5,
+        total: 0,
+        categoryId: ""
+      },
+      page: 1,
+      size: 5,
+      total: 0,
+      categoryId: ""
     };
   },
-  mounted() {
-    axios.get("http://localhost:9200/blog/list?page=1&size=5")
-    .then(this.getData);
-    console.log(this.blogList);
+
+// 监听器
+  watch: {
+    // 监听某一个对象的值发送改变，而做出相应的操作
+    selectContent: {
+  // 参数的第一个值为改变值的新值，第二个为旧值。这里是对象
+      handler(newname, old) {
+        console.log("new", newname);
+        console.log("old", old);
+        // 发送请求
+         axios
+      .get("http://localhost:9200/blog/list", {
+        params: {
+          page: this.selectContent.page,
+          size: this.selectContent.size,
+          categoryId: this.selectContent.categoryId
+        }
+      })
+      .then(this.getData);
+      },
+      // deep为深度监听，设置deep为true可以监听到对象属性
+      deep: true,
+      // immediate可以在第一次的时候就能监听到数据的改变
+      immediate:true
+    }
   },
+  mounted() {
+    // alert("mounted");
+    // axios
+    //   .get("http://localhost:9200/blog/list", {
+    //     params: {
+    //       page: this.selectContent.page,
+    //       size: this.selectContent.size
+    //     }
+    //   })
+    //   .then(this.getData);
+    // console.log(this.blogList);
+  },
+
+  // updated() {
+  //   // alert("updated");
+  //   console.log(this.data);
+  //   axios
+  //     .get("http://localhost:9200/blog/list", {
+  //       params: {
+  //         page: this.page,
+  //         size: this.size,
+  //         categoryId: this.categoryId
+  //       }
+  //     })
+  //     .then(this.getData);
+  // },
   // 小写，小写啊
   components: {
     HomeHeader,
@@ -88,12 +148,32 @@ export default {
     BlogsList
   },
   methods: {
-    getData(response){
-       response = response.data;
-      if (response){
+    // 根据分类进行查询
+    selectByCategoryId(categoryId) {
+      // alert(categoryId);
+      this.selectContent.categoryId = categoryId;
+    },
+    getpage(currentPage) {
+      // alert("当前页" + currentPage);
+      this.selectContent.page = currentPage;
+      // axios
+      //   .get("http://localhost:9200/blog/list", {
+      //     params: {
+      //       page: this.page,
+      //       size: this.size
+      //     }
+      //   })
+      //   .then(this.getData);
+      console.log("page", this.page);
+    },
+    getData(response) {
+      response = response.data;
+      if (response) {
         // console.log(response);
         this.blogList = response.dataInfo.contents;
         // console.log(this.blogList);
+        // 总页数
+        this.total = response.dataInfo.total;
       }
     }
   }
@@ -334,11 +414,11 @@ ul {
   padding: 5px;
 }
 /* 网站统计 */
-.data{
+.data {
   width: 340px;
   height: 200px;
   /* background: red; */
-    background: #f8f8f8;
+  background: #f8f8f8;
 
   margin-right: 60px;
   /* margin: 0 auto;  */

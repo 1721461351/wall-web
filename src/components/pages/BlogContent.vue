@@ -3,68 +3,34 @@
     <el-container>
       <el-header>
         <!-- 导航栏 -->
-        <home-header></home-header>
+        <home-header
+       ></home-header>
       </el-header>
 
       <!-- 标题 -->
       <div class="title">
-        <nav>
+        <nav style="padding-left:20px">
           <div>首页</div>
           <div>></div>
-          <div>站长之家</div>
+          <div>{{blog.blogTitle}}</div>
           <div>></div>
           <div>正文</div>
         </nav>
       </div>
       <!-- 轮播图+分类 -->
-      <div class="slide_and_type">
+      <!-- <div class="slide_and_type"> -->
         <!-- <Slide></Slide> -->
-        <Tag></Tag>
+        <!-- <Tag></Tag> -->
 
+<div class="content">
         <!-- 文章内容 -->
         <div class="a-content">
-          、导读
-          自己喜欢的域名 94rg.com。苦心经营了一段时间，后续也打算一直努力下去，直到今天无意中在一个查询域名被墙的网站上，发现自己的这个域名被墙了，为了保证了准确性，我又去了其他几个类似的网站查询了一把，结果一样令人揪心，思考了很久，决定记录一把。
-          2、什么是域名
-          域名就是一段类似个人身份证的网络资源的标识，做开发的同学可以类比数据库主键。那么为啥域名这么重要你。这里我来总结一下
-          没有域名，用户只能通过ip来访问你的服务器，但是多主机场景怎么覆盖；服务器从国内迁移到国外亦或重新购买了一台云服务器（ip变了），难道从前的努力就付诸东流。
-          同类型的网站这么多，仅凭搜索引擎可能区分不了，那么域名是你的一个重要的身份凭证
-          2、域名的分类
-          目前域名分国际域名和国度域名。比如com就是国际顶级通用域名，cn就是中国独有的国内顶级域名。类似的很多ge cx cc org tech site...;
-          面对这么多的域名后缀我们改怎么选？
-          优先com这种老牌的顶级域名，不要问为什么？你所熟知的域名有哪些不是com的？cn net org等次之，尽量不要选那些少见的域名，以来国内备案不支持，而来seo也是有一定的差别的。虽然官方说没有，实测还是存在的
-          域名最好做到和品牌内容相关联，做到见名知其意。不能跟风，认为越短越好，画了大价钱去买所谓的天价域名。（土豪除外），对于我们这种小打小闹的相差个几位影响不到，你看 google bytedance segmentfault 不是一样很长。
+          <div style="width:850px">
+            <div class="content-info">
+         {{blog.blogContent}}
+         </div>
         </div>
-
-        <!-- 作者信息 -->
-        <div class="author-info">
-          <div class="profile-intro">
-            <div class="head-image">
-              <img
-                src="https://upload.jianshu.io/users/upload_avatars/20513214/57fc3c23-c1d7-4d5b-83a4-a7990137dcc5.jpg?imageMogr2/auto-orient/strip|imageView2/1/w/240/h/240"
-                alt
-              />
-            </div>
-            <div class="name-and-fous">
-              <div class="author-name">网名</div>
-              <div class="author-focus">
-                <el-button round size="mini" class="focus-bt">关注</el-button>
-              </div>
-            </div>
-            <!-- 专业 -->
-            <div class="more-info">信息与电气工程学院</div>
-          </div>
-          <!-- 作者文章 -->
-          <ul class="author-article">
-            <li>  <el-link href="https://element.eleme.io" target="_blank">文章1</el-link>
-</li>
-            <li><el-link href="https://element.eleme.io" target="_blank">文章1</el-link></li>
-            <li><el-link href="https://element.eleme.io" target="_blank">文章1</el-link></li>
-            <li><el-link href="https://element.eleme.io" target="_blank">文章1</el-link></li>
-          </ul>
-        </div>
-
-        <!-- 评论 -->
+         <!-- 评论 -->
         <div class="comment">
           <el-input
             class="comment"
@@ -73,16 +39,76 @@
             placeholder="想对作者说些什么"
             v-model="textarea2"
           ></el-input>
-          <!-- 发表评论按钮 -->
-          <el-button type="success" round class="comment-button">发布评论</el-button>
+          <div class="comment-button">
+          <el-button type="success" round style="float:right">发布评论</el-button>
+          </div>  
         </div>
 
+        <!-- 推荐 -->
+        <div class="b-content">
+          <div class="b-content-info">
+            <span style="float:left;padding-left:25px">我当摸金校尉的那些年</span>
+            <span style="float:right">500</span>
+            <span style="float:right;padding-right:20px">小黑</span>
+          </div>
+        </div>
+
+          <!-- 推荐 -->
+        <div class="b-content">
+          <div class="b-content-info">
+            <span style="float:left;padding-left:25px">我当摸金校尉的那些年</span>
+            <span style="float:right">500</span>
+            <span style="float:right;padding-right:20px">小黑</span>
+          </div>
+        </div>
+</div>
         <!-- 推荐阅读 -->
-        <div class="read">
+        <!-- <div class="read">
           <Blogs-list></Blogs-list>
-        </div>
-      </div>
+        </div>-->
+      <!-- </div>   -->
 
+
+
+        <!-- 作者信息 -->
+        <div class="author">
+          <div class="author-info">
+            <div class="profile-intro">
+              <div class="head-image">
+                <img
+                  src="https://upload.jianshu.io/users/upload_avatars/20513214/57fc3c23-c1d7-4d5b-83a4-a7990137dcc5.jpg?imageMogr2/auto-orient/strip|imageView2/1/w/240/h/240"
+                  alt
+                />
+              </div>
+              <div class="name-and-fous">
+                <div class="author-name">网名</div>
+                <div class="author-focus">
+                  <el-button round size="mini" class="focus-bt">关注</el-button>
+                </div>
+              </div>
+              <!-- 专业 -->
+              <div class="more-info">信息与电气工程学院</div>
+            </div>
+            <!-- 作者文章 -->
+            <ul class="author-article">
+              <li>
+                <el-link href="https://element.eleme.io" target="_blank">文章1</el-link>
+              </li>
+              <li>
+                <el-link href="https://element.eleme.io" target="_blank">文章1</el-link>
+              </li>
+              <li>
+                <el-link href="https://element.eleme.io" target="_blank">文章1</el-link>
+              </li>
+              <li>
+                <el-link href="https://element.eleme.io" target="_blank">文章1</el-link>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+       
+        </div>
       <!-- <slide-and-type></slide-and-type> -->
 
       <!-- 写文章+分页-->
@@ -107,7 +133,7 @@ import HomeFoot from "@/components/pages/foot/HomeFoot";
 import Slide from "@/components/pages/content/Slide";
 import Tag from "@/components/pages/content/Tag";
 import BlogsList from "@/components/pages/content/BlogsList";
-
+import axios from "axios";
 export default {
   name: "Home",
 
@@ -118,7 +144,9 @@ export default {
         "https://jwc.syau.edu.cn/img/3.jpg"
       ],
       issubfield: false,
-      textarea2: ""
+      textarea2: "",
+      blogId: this.$route.params.blogId,
+      blog: {}
     };
   },
   // 小写，小写啊
@@ -130,7 +158,23 @@ export default {
     Tag,
     BlogsList
   },
-  methods: {}
+  methods: {
+    getData(response) {
+      console.log("data", response);
+      if (response) {
+        this.blog = response.data.dataInfo;
+      }
+    }
+  },
+
+  mounted() {
+    // alert("updated");
+    console.log("this", this.blogId);
+    // 获取文章内容啦
+    axios
+      .get("http://localhost:9200/blog/singleBlog/" + this.blogId)
+      .then(this.getData);
+  }
 };
 </script>
 
@@ -379,12 +423,15 @@ ul {
 }
 /* 评论 */
 .comment {
+  background: #ffffff;
   width: 850px;
   margin-top: 20px;
 }
 .comment-button {
   margin-top: 10px;
   float: right;
+  margin-bottom: 10px;
+    width: 850px;
 }
 /* 作者信息 */
 .author-info {
@@ -392,15 +439,27 @@ ul {
   /* height: 340px; */
   /* border: 1px solid red; */
   background: #f8f8f8;
-  float: right;
+  float: left;
   margin-top: 20px;
+  margin-left: 10px;
+  /* position: absolute; */
+  /* top: 150px; */
+  /* left: 340px; */
+  /* margin-left: 1200px; */
+}
+/* 父亲 */
+.author {
+  position: relative;
+  float: left;
+  /* width: 340px; */
+  /* height: 100px; */
 }
 .profile-intro {
   /* background: greenyellow; */
   padding: 20px auto;
   width: 340px;
   height: 140px;
-  border-bottom: 1px solid #EEEEEE;
+  border-bottom: 1px solid #eeeeee;
 }
 
 .head-image {
@@ -448,11 +507,45 @@ ul {
   border: 1px solid blue;
 }
 /* 作者的其他文章 */
-.author-article li{
+.author-article li {
   padding: 10px;
-  }
+}
 /* 推荐阅读底部 */
 .read {
   margin-top: 60px;
+}
+
+/* 总体内容布局 */
+.content{
+  width: 1200px;
+  margin: 0 auto;
+}
+.comment-button{
+  /* height:40px; */
+
+}
+.b-content{
+  width: 850px;
+  height: 60px;
+  /* background: red; */
+  border-bottom: 1px solid #f8f8f8;
+  background: #ffffff;
+  /* float: left; */
+  clear: both;
+}
+.content-info{
+  width: 800px;
+  margin: 0 auto;
+  padding-top: 25px;
+  padding-bottom: 20px;  
+}
+.b-content-info{
+  width: 800px;
+  margin: 0 auto;
+  line-height: 60px;
+}
+.b-content-info{
+  display: inline-block;
+  
 }
 </style>
