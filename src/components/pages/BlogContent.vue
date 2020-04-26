@@ -3,8 +3,7 @@
     <el-container>
       <el-header>
         <!-- 导航栏 -->
-        <home-header
-       ></home-header>
+        <home-header></home-header>
       </el-header>
 
       <!-- 标题 -->
@@ -19,56 +18,60 @@
       </div>
       <!-- 轮播图+分类 -->
       <!-- <div class="slide_and_type"> -->
-        <!-- <Slide></Slide> -->
-        <!-- <Tag></Tag> -->
+      <!-- <Slide></Slide> -->
+      <!-- <Tag></Tag> -->
 
-<div class="content">
+      <div class="content">
         <!-- 文章内容 -->
         <div class="a-content">
           <div style="width:850px">
-            <div class="content-info">
-         {{blog.blogContent}}
-         </div>
-        </div>
-         <!-- 评论 -->
-        <div class="comment">
-          <el-input
-            class="comment"
-            type="textarea"
-            :autosize="{ minRows: 2, maxRows: 4}"
-            placeholder="想对作者说些什么"
-            v-model="textarea2"
-          ></el-input>
-          <div class="comment-button">
-          <el-button type="success" round style="float:right">发布评论</el-button>
-          </div>  
-        </div>
-
-        <!-- 推荐 -->
-        <div class="b-content">
-          <div class="b-content-info">
-            <span style="float:left;padding-left:25px">我当摸金校尉的那些年</span>
-            <span style="float:right">500</span>
-            <span style="float:right;padding-right:20px">小黑</span>
+            <div class="content-edit">
+              <div>小黑</div>
+              <div>2020-03-01</div>
+              <div>10</div>
+              <span>
+                <el-link type="primary">编辑</el-link>
+              </span>
+            </div>
+            <div class="content-info" v-html="blog.htmlContent"></div>
           </div>
-        </div>
+          <!-- 评论 -->
+          <div class="comment">
+            <el-input
+              class="comment"
+              type="textarea"
+              :autosize="{ minRows: 2, maxRows: 4}"
+              placeholder="想对作者说些什么"
+              v-model="textarea2"
+            ></el-input>
+            <div class="comment-button">
+              <el-button type="success" round style="float:right">发布评论</el-button>
+            </div>
+          </div>
 
           <!-- 推荐 -->
-        <div class="b-content">
-          <div class="b-content-info">
-            <span style="float:left;padding-left:25px">我当摸金校尉的那些年</span>
-            <span style="float:right">500</span>
-            <span style="float:right;padding-right:20px">小黑</span>
+          <div class="b-content">
+            <div class="b-content-info">
+              <span style="float:left;padding-left:25px">我当摸金校尉的那些年</span>
+              <span style="float:right">500</span>
+              <span style="float:right;padding-right:20px">小黑</span>
+            </div>
+          </div>
+
+          <!-- 推荐 -->
+          <div class="b-content">
+            <div class="b-content-info">
+              <span style="float:left;padding-left:25px">我当摸金校尉的那些年</span>
+              <span style="float:right">500</span>
+              <span style="float:right;padding-right:20px">小黑</span>
+            </div>
           </div>
         </div>
-</div>
         <!-- 推荐阅读 -->
         <!-- <div class="read">
           <Blogs-list></Blogs-list>
         </div>-->
-      <!-- </div>   -->
-
-
+        <!-- </div>   -->
 
         <!-- 作者信息 -->
         <div class="author">
@@ -106,9 +109,7 @@
             </ul>
           </div>
         </div>
-
-       
-        </div>
+      </div>
       <!-- <slide-and-type></slide-and-type> -->
 
       <!-- 写文章+分页-->
@@ -431,7 +432,7 @@ ul {
   margin-top: 10px;
   float: right;
   margin-bottom: 10px;
-    width: 850px;
+  width: 850px;
 }
 /* 作者信息 */
 .author-info {
@@ -516,15 +517,14 @@ ul {
 }
 
 /* 总体内容布局 */
-.content{
+.content {
   width: 1200px;
   margin: 0 auto;
 }
-.comment-button{
+.comment-button {
   /* height:40px; */
-
 }
-.b-content{
+.b-content {
   width: 850px;
   height: 60px;
   /* background: red; */
@@ -533,19 +533,40 @@ ul {
   /* float: left; */
   clear: both;
 }
-.content-info{
+.content-edit {
+  width: 800px;
+  height: 30px;
+  margin: 0 auto;
+ background: #ffffff;
+  margin-top: 10px;
+}
+
+.content-edit div{
+  float: left;
+  display: inline-block;
+  padding-left: 20px;
+  line-height: 30px;
+}
+.content-edit div:first-child{
+  padding-left: 0;
+}
+.content-edit span {
+  float: right;
+  line-height: 26px;
+  padding-right: 10px;
+}
+.content-info {
   width: 800px;
   margin: 0 auto;
   padding-top: 25px;
-  padding-bottom: 20px;  
+  padding-bottom: 20px;
 }
-.b-content-info{
+.b-content-info {
   width: 800px;
   margin: 0 auto;
   line-height: 60px;
 }
-.b-content-info{
+.b-content-info {
   display: inline-block;
-  
 }
 </style>

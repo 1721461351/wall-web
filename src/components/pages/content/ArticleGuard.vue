@@ -1,132 +1,143 @@
 <template>
-     <div class="article-guard">
-        <!-- 导航部分 -->
-        <div class="article-nav">
-          <span>
-            <a href="https://element.eleme.io">全部()</a>
-          </span>
-          <span>
-            <a href="https://element.eleme.io">公开()</a>
-          </span>
-          <span>
-            <a href="https://element.eleme.io">私密()</a>
-          </span>
+  <div class="article-guard">
+    <!-- 导航部分 -->
+    <div class="article-nav">
+      <span>
+        <a href="https://element.eleme.io">全部()</a>
+      </span>
+      <span>
+        <a href="https://element.eleme.io">公开()</a>
+      </span>
+      <span>
+        <a href="https://element.eleme.io">私密()</a>
+      </span>
+    </div>
+
+    <!-- 搜索部分 -->
+    <div class="search-box">
+      <div class="search-box-content">
+        <div class="screen">筛选:</div>
+        <!-- 按照时间筛选 -->
+        <div class="screen-date">
+          <el-select v-model="search.year" placeholder="年">
+            <el-option
+              v-for="(item,index) in yearoptions"
+              :key="index"
+              :label="item.label"
+              :value="item.value"
+            ></el-option>
+          </el-select>
+
+          <el-select v-model="search.month" placeholder="月">
+            <el-option
+              v-for="item in monthoptions"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            ></el-option>
+          </el-select>
         </div>
+        <!-- 按照类型和标签筛选 -->
+        <el-select class="select_category" v-model="search.categoryId" placeholder="文章分类">
+          <el-option
+            v-for="item in categoryOptions"
+            :key="item.categoryId"
+            :label="item.categoryName"
+            :value="item.categoryId"
+          ></el-option>
+        </el-select>
 
-        <!-- 搜索部分 -->
-        <div class="search-box">
-          <div class="search-box-content">
-            <div class="screen">筛选:</div>
-            <!-- 按照时间筛选 -->
-            <div class="screen-date">
-              <el-select v-model="value" placeholder="年">
-                <el-option
-                  v-for="(item,index) in yearoptions"
-                  :key="index"
-                  :label="item.label"
-                  :value="item.value"
-                ></el-option>
-              </el-select>
+        <el-select class="select_tag" v-model="search.tagId" placeholder="文章标签">
+          <el-option
+            v-for="item in articleOptions"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
+          ></el-option>
+        </el-select>
 
-              <el-select v-model="value" placeholder="月">
-                <el-option
-                  v-for="item in options"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"
-                ></el-option>
-              </el-select>
-            </div>
-            <!-- 按照类型和标签筛选 -->
-            <el-select class="select_category" v-model="value" placeholder="文章分类">
-              <el-option
-                v-for="item in options"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
-              ></el-option>
-            </el-select>
+        <!-- 输入框 -->
+        <el-input v-model="search.keyWord" placeholder="请输入关键字"></el-input>
+        <!-- 搜索框 -->
+        <el-button type="success" round class="search-button" @click="searchButton">搜索</el-button>
+      </div>
+    </div>
 
-            <el-select class="select_tag" v-model="value" placeholder="文章标签">
-              <el-option
-                v-for="item in options"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
-              ></el-option>
-            </el-select>
-
-            <!-- 输入框 -->
-            <el-input v-model="input" placeholder="请输入关键字"></el-input>
-            <!-- 搜索框 -->
-            <el-button type="success" round class="search-button">搜索</el-button>
-          </div>
+    <!--文章列表部分  -->
+    <div class="content-list" v-for="item in articles.contents" :key="item.blogId">
+      <div class="content-list-title">
+         <el-link :href="'http://localhost:8080/writerblog?blogId='+item.blogId" target="_blank"> {{item.blogTitle}}</el-link>
+       </div>
+      <div class="info">
+        <div class="content-list-info">
+          <span>{{item.category.categoryName}}</span>
+          <span>{{item.creatTime}}</span>
+          <span>阅读量({{item.readNum}})</span>
+          <span>点赞数({{item.likeNum}})</span>
         </div>
-
-        <!--文章列表部分  -->
-        <div class="content-list">
-          <div class="content-list-title">我的大学生涯</div>
-          <div class="info">
-            <div class="content-list-info">
-              <span>心情</span>
-              <span>2020年4月18日</span>
-              <span>阅读量()</span>
-              <span>评论数()</span>
-            </div>
-            <div class="content-list-link">
-              <el-link type="primary">查看</el-link>
-              <el-link type="danger">删除</el-link>
-            </div>
-          </div>
-        </div>
-
-        <!--文章列表部分  -->
-        <div class="content-list">
-          <div class="content-list-title">我的大学生涯</div>
-          <div class="info">
-            <div class="content-list-info">
-              <span>心情</span>
-              <span>2020年4月18日</span>
-              <span>阅读量()</span>
-              <span>评论数()</span>
-            </div>
-            <div class="content-list-link">
-              <el-link type="primary">查看</el-link>
-              <el-link type="danger">删除</el-link>
-            </div>
-          </div>
+        <div class="content-list-link">
+          <el-link type="primary">查看</el-link>
+          <el-link type="danger">删除</el-link>
         </div>
       </div>
+    </div>
+
+    <!--文章列表部分  -->
+    <div class="content-list">
+      <div class="content-list-title">我的大学生涯</div>
+      <div class="info">
+        <div class="content-list-info">
+          <span>心情</span>
+          <span>2020年4月18日</span>
+          <span>阅读量()</span>
+          <span>评论数()</span>
+        </div>
+        <div class="content-list-link">
+          <el-link type="primary">查看</el-link>
+          <el-link type="danger">删除</el-link>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
+import axios from "axios";
 export default {
-    name:'ArticleGuard',
-      data() {
+  name: "ArticleGuard",
+  data() {
     return {
+      search: {
+        year: "",
+        month: "",
+        categoryId: "",
+        tagId: "",
+        keyWord: "",
+        username: "2016188023"
+      },
       input: "",
       monthoptions: [
         {
-          value: "选项1",
+          value: "1",
           label: "1月"
         },
         {
-          value: "选项2",
+          value: "2",
           label: "2月"
         },
         {
-          value: "选项3",
+          value: "3",
           label: "3月"
         },
         {
-          value: "选项4",
+          value: "4",
           label: "4月"
         },
         {
-          value: "选项5",
+          value: "5",
           label: "5月"
         },
-         {
+        {
           value: "6",
           label: "6月"
         },
@@ -146,7 +157,7 @@ export default {
           value: "10",
           label: "10月"
         },
-          {
+        {
           value: "11",
           label: "11月"
         },
@@ -156,26 +167,26 @@ export default {
         }
       ],
 
-       yearoptions: [
+      yearoptions: [
         {
-          value: "选项1",
+          value: "",
           label: "不限"
         },
         {
-          value: "选项2",
+          value: "2020",
           label: "2020"
         },
         {
-          value: "选项3",
+          value: "2019",
           label: "2019"
         },
         {
-          value: "选项4",
+          value: "2018",
           label: "2018"
-        },
+        }
       ],
 
-        options: [
+      options: [
         {
           value: "选项1",
           label: "不限"
@@ -191,9 +202,12 @@ export default {
         {
           value: "选项4",
           label: "2018"
-        },
+        }
       ],
-      value: ""
+      value: "",
+      articleOptions: [],
+      categoryOptions: [],
+      articles: [] //文章内容
     };
   },
   methods: {
@@ -202,9 +216,57 @@ export default {
     },
     handleClose(key, keyPath) {
       console.log(key, keyPath);
+    },
+    searchButton() {
+      alert("搜索");
+      console.log(this.search);
+      axios
+        .get("http://localhost:9200/guard/blog", {
+          params: {
+            categoryId: this.search.categoryId,
+            keyWord: this.search.keyWord,
+            year: this.search.year,
+            month: this.search.month,
+            tagId: this.search.tagId,
+            username: this.search.username
+          }
+        })
+        .then(this.getCategoryList);
+    },
+    getCategoryList(res) {
+      this.categoryOptions = res.data.dataInfo;
+    },
+    getSearchData(res) {
+      console.log("watch", res);
+      this.articles = res.data.dataInfo;
+      console.log("articles", this.articles);
     }
+  },
+  // 监听
+  watch: {
+    search: {
+      deep: true,
+      immediate: true,
+      handler(newname, oldbname) {
+        axios
+          .get("http://localhost:9200/guard/blog", {
+            params: {
+              categoryId: this.search.categoryId,
+              keyWord: this.search.keyWord,
+              year: this.search.year,
+              month: this.search.month,
+              tagId: this.search.tagId,
+              username: this.search.username
+            }
+          })
+          .then(this.getSearchData);
+      }
+    }
+  },
+  mounted() {
+    axios.get("http://localhost:9200/category/list").then(this.getCategoryList);
   }
-}
+};
 </script>
 
 <style scoped>

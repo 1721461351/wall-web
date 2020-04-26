@@ -3,95 +3,122 @@
     <!-- 写文章 -->
 
     <div class="articles_and_recommends">
-      <div >
-      <article class="article" v-for="blog in list" :key="blog.blogId">
-        <!-- 文章图片 -->
-        <div class="article-img">
-          <a :href="'/blogContent/'+blog.blogId">
-            <img :src="blog.blogImage" alt="" width="150px" height="150px"/>
-          </a>
-          <!-- 文章分类标签 -->
-          <span class="article-type">
-            <a href="#">{{blog.category.categoryName}}</a>
-          </span>
-        </div>
-        <!-- 文章标题和内容 -->
-        <div class="article-header">
-          <h4>
-            <a :href="'/blogContent/'+blog.blogId">{{blog.blogTitle}}</a>
-          </h4>
-          <!-- 文章内容 -->
-          <div class="article-content">{{blog.blogContent}}</div>
-        </div>
+      <div>
+        <article class="article" v-for="blog in list" :key="blog.blogId">
+          <!-- 文章图片 -->
+          <div class="article-img">
+            <a :href="'/blogContent/'+blog.blogId">
+              <img :src="blog.blogImage" alt width="150px" height="150px" />
+            </a>
+            <!-- 文章分类标签 -->
+            <span class="article-type">
+              <a href="#">{{blog.category.categoryName}}</a>
+            </span>
+          </div>
+          <!-- 文章标题和内容 -->
+          <div class="article-header">
+            <h4>
+              <a :href="'/blogContent/'+blog.blogId">{{blog.blogTitle}}</a>
+            </h4>
+            <!-- 文章内容 -->
+            <div class="article-content">{{blog.blogDigest}}</div>
+          </div>
 
-        <!-- 文章其他内容 -->
-        <!-- 日期，浏览，评论，赞 -->
-        <div class="other">
-          <div class="article-other">
-            <div class="article-username">{{blog.username}}</div>
-            <div class="artcle-date">2020-03-24</div>
-            <div class="article-read">浏览({{blog.readNum}})</div>
-            <div class="article-comment">评论(1)</div>
-            <div class="article-zan">赞({{blog.likeNum}})</div>
-            <!-- 阅读全文 -->
-            <div class="article-more">
-              <a :href="'/blogContent/'+blog.blogId">阅读全文</a>
+          <!-- 文章其他内容 -->
+          <!-- 日期，浏览，评论，赞 -->
+          <div class="other">
+            <div class="article-other">
+              <div class="article-username">{{blog.username}}</div>
+              <div class="artcle-date">2020-03-24</div>
+              <div class="article-read">浏览({{blog.readNum}})</div>
+              <div class="article-comment">评论(1)</div>
+              <div class="article-zan" @click="thubmbClick(blog)">赞({{blog.likeNum}})</div>
+              <!-- 阅读全文 -->
+              <div class="article-more">
+                <a :href="'/blogContent/'+blog.blogId">阅读全文</a>
+              </div>
             </div>
           </div>
-        </div>
-      </article>
+        </article>
       </div>
-
- 
     </div>
     <!-- 分   页 -->
     <div class="block">
       <!-- <span class="demonstration">页数较少时的效果</span> -->
-      <el-pagination layout="prev, pager, next"
-       :total="total*5"
+      <el-pagination
+        layout="prev, pager, next"
+        :total="total*5"
         :current-page.sync="currentPage"
         :page-size.sync="pageSize"
-        @current-change="handleCurrentChange"></el-pagination>
+        @current-change="handleCurrentChange"
+        @thumbs="getLikeNum"
+      ></el-pagination>
     </div>
   </div>
 </template>
 
 <script>
+import axios from "axios";
 export default {
   props: {
-   list:Array,
-   total:Number,
-   page:{
-     type:Number,
-     default:1
-   },
-   size:Number
+    list: Array,
+    total: Number,
+    user: Object, //用户信息
+    page: {
+      type: Number,
+      default: 1
+    },
+    size: Number
   },
-  name: 'BlogsList',
-  data () {
+  name: "BlogsList",
+  data() {
     return {
-      blog: '',
-      currentPage:this.page,
-      pageSize:this.size
-    }
+      blog: "",
+      likeNum: "",
+      currentPage: this.page,
+      pageSize: this.size
+    };
   },
-
-
 
   methods: {
-    handleCurrentChange(currentPage){
-      this.$emit("getCurrentPage",currentPage);
+    handleCurrentChange(currentPage) {
+      this.$emit("getCurrentPage", currentPage);
       // alert("handleCurrentChange");
       // console.log("handleCurrentChange",val);
+    },
+
+    getLikeNum(response) {
+      console.log("点赞", response);
+      //  this.$emit("likeNum", response.data.dataInfo);
+      this.likeNum = response.data.dataInfo;
+      console.log(blog);
+    },
+    // 点赞
+    thubmbClick(blog) {
+      console.log("username", this.user.username);
+      //判断是否登录
+      if (this.user.username != "" && this.user.username != undefined) {
+        // 登录的情况下
+        // alert(blogId);
+        axios
+          .get("http://localhost:9200/blog/thumbs", {
+            params: {
+              username: this.user.username,
+              blogId: blog.blogId
+            }
+          })
+          .then(response => {
+            // 原来点赞数是这么做的，把blog整个对象传了进来，而不仅仅是blogId
+            blog.likeNum += 1;
+            console.log(blog);
+            this.$message.success("点赞 +1");
+          });
+      } else {
+        this.$message.warning("请先登录!");
+      }
     }
-    // getBlogList(){
-    //   axios.get('https://autumnfish.cn/api/joke/list?num=3').then(function (response) {
-    //     console.log(response)
-    //   }
-    //   )
-    // }
   }
-}
+};
 </script>
 
 <style>
@@ -153,6 +180,7 @@ export default {
   /* border: 1px solid blue; */
   overflow: hidden;
   color: #777777;
+  text-overflow: ellipsis;
 }
 
 /* 文章其他内容  */

@@ -13,13 +13,12 @@
               @close="handleClose"
               text-color="#3D3D3D"
             >
-     
               <el-menu-item index="2">
                 <i class="el-icon-menu"></i>
                 <span slot="title">首页</span>
               </el-menu-item>
 
-<!-- 复制的 -->
+              <!-- 复制的 -->
               <el-submenu index="1">
                 <template slot="title">
                   <i class="el-icon-location"></i>
@@ -32,17 +31,17 @@
                 </el-menu-item-group>
                 <!-- <el-menu-item-group title="分组2">
                   <el-menu-item index="1-3">选项3</el-menu-item>
-                </el-menu-item-group> -->
+                </el-menu-item-group>-->
                 <!-- <el-submenu index="1-4">
                   <template slot="title">选项4</template>
                   <el-menu-item index="1-4-1">选项1</el-menu-item>
-                </el-submenu> -->
+                </el-submenu>-->
               </el-submenu>
 
               <!-- <el-menu-item index="3" disabled>
                 <i class="el-icon-document"></i>
                 <span slot="title">导航三</span>
-              </el-menu-item> -->
+              </el-menu-item>-->
               <el-menu-item index="4">
                 <i class="el-icon-setting"></i>
                 <span slot="title">标签管理</span>
@@ -59,15 +58,15 @@
 
 <script>
 import ArticleGuard from "@/components/pages/content/ArticleGuard";
-
+import axios from "axios";
 export default {
-    components:{
-        ArticleGuard
-    },
+  components: {
+    ArticleGuard
+  },
   name: "BlogGuard",
   data() {
     return {
-        articleIsshow:false,
+      articleIsshow: false,
       input: "",
       options: [
         {
@@ -101,17 +100,19 @@ export default {
     handleClose(key, keyPath) {
       console.log(key, keyPath);
     },
-    guardClick(){
-        console.log("1",this.articleIsshow);
-        this.articleIsshow = true;
+    guardClick() {
+      console.log("1", this.articleIsshow);
+      this.articleIsshow = true;
     }
-  }
+  },
+
+
 };
 </script>
 
 <style scoped>
-.el-submenu .el-menu-item{
-    min-width: 180px;
+.el-submenu .el-menu-item {
+  min-width: 180px;
 }
 a {
   text-decoration: none;

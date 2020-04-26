@@ -18,10 +18,12 @@
         type="text"
         placeholder="请输入标题"
         v-model="form.title"
-        maxlength="10"
+        maxlength="20"
         show-word-limit
       ></el-input>
       <div class="head3">
+
+        
         <!-- 按钮 -->
         <div>
         <el-button round>保存草稿</el-button>
@@ -55,6 +57,17 @@
         </div>  -->
       </div>
     </div>
+
+    <!-- 摘要 -->
+        <div class="digest" style="margin:0 auto;margin-top:5px;width:96%;">
+          <el-input
+  type="textarea"
+  :rows="2"
+  placeholder="请输入摘要"
+  maxlength="200"
+  v-model="form.textarea">
+</el-input>
+        </div>
     <div class="markdown">
       <!-- markdown界面 -->
       <mavon-editor
@@ -178,6 +191,13 @@ export default {
             });
             return;
           }
+          if(this.form.textarea==""){
+            this.$message({
+              message:"请输入摘要!",
+              type:"warning"
+            });
+            return;
+          }
         console.log("this",this);
         this.$refs[forName].validate((valid)=>{
         
@@ -240,12 +260,31 @@ export default {
         console.log("tag",res);
         this.tags = res.data.dataInfo;
       });
+      if(this.$route.query.blogId){
+      // 文章修改
+      console.log("edit this",this.$route.query.blogId);
+      axios.get('http://localhost:9200/blog/editBlog',{
+        params:{
+          blogId:this.$route.query.blogId //获取了?传来的参数
+        }
+      })
+      .then(res=>{
+        console.log("edit",res);
+        this.form.title = res.data.dataInfo.blogTitle;
+        this.form.content = res.data.dataInfo.blogContent;
+        this.form.textarea = res.data.dataInfo.blogDigest;
+        this.form.category = res.data.dataInfo.categoryId;
+        this.form.publishStatus = res.data.dataInfo.isVisit;
+        this.dynamicTags = res.data.dataInfo.tagNames;
+      })}
   },
   data() {
     return {
       dynamicTag:{
         
       },
+      // 修改传来的blogId
+      blogId:this.$route.params.blogId,
       // 是否公开
       radio:"",
       // 分类
@@ -299,11 +338,13 @@ export default {
 
       dialogFormVisible: false,
       form: {
+        blogId:this.$route.query.blogId,
         username:"2016188023",
         selectTag:[],
         content:"",
         // radio:"",
         publishStatus:"",
+        textarea:"", //摘要
         title:"",
         tag:[],
         // name: "",

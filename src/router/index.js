@@ -35,6 +35,12 @@ export default new Router({
       name: 'WriterBlog',
       component: WriterBlog
     },
+    // 修改文章
+    {
+      path: '/writerblog?blogId=:blogId',
+      name: 'editBlog',
+      component: WriterBlog
+    },
     {
       path: '/login',
       name: 'Login',

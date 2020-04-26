@@ -44,6 +44,7 @@
         :total="total"
         :page="page"
         :size="size"
+        :user="user"
         @getCurrentPage="getpage"
       ></blogs-list>
 
@@ -74,6 +75,7 @@ export default {
         "https://jwc.syau.edu.cn/img/3.jpg"
       ],
       blogList: [],
+      user: { username: "2016188023" },
       selectContent: {
         page: 1,
         size: 5,
@@ -87,29 +89,29 @@ export default {
     };
   },
 
-// 监听器
+  // 监听器
   watch: {
     // 监听某一个对象的值发送改变，而做出相应的操作
     selectContent: {
-  // 参数的第一个值为改变值的新值，第二个为旧值。这里是对象
+      // 参数的第一个值为改变值的新值，第二个为旧值。这里是对象
       handler(newname, old) {
         console.log("new", newname);
         console.log("old", old);
         // 发送请求
-         axios
-      .get("http://localhost:9200/blog/list", {
-        params: {
-          page: this.selectContent.page,
-          size: this.selectContent.size,
-          categoryId: this.selectContent.categoryId
-        }
-      })
-      .then(this.getData);
+        axios
+          .get("http://localhost:9200/blog/list", {
+            params: {
+              page: this.selectContent.page,
+              size: this.selectContent.size,
+              categoryId: this.selectContent.categoryId
+            }
+          })
+          .then(this.getData);
       },
       // deep为深度监听，设置deep为true可以监听到对象属性
       deep: true,
       // immediate可以在第一次的时候就能监听到数据的改变
-      immediate:true
+      immediate: true
     }
   },
   mounted() {
@@ -148,6 +150,11 @@ export default {
     BlogsList
   },
   methods: {
+    // 喜欢数
+    getlikenum(likeNum) {
+      // alert("喜欢" + likeNum);
+
+    },
     // 根据分类进行查询
     selectByCategoryId(categoryId) {
       // alert(categoryId);
