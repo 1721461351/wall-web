@@ -51,8 +51,15 @@ export default new Router({
       path: '/blogguard',
       name: 'BlogGuard',
       component: BlogGuard
-    }
+    },
+ 
+    {
+      path: '/type/:categoryId',
+      name: 'type',
+      component: Home
+    },
   ],
+  
    // 防止出#号
    mode:"history"
 })

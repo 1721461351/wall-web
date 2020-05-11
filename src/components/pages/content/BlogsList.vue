@@ -4,7 +4,7 @@
 
     <div class="articles_and_recommends">
       <div>
-        <article class="article" v-for="blog in list" :key="blog.blogId">
+        <article class="article soild-shadow" v-for="blog in list" :key="blog.blogId">
           <!-- 文章图片 -->
           <div class="article-img">
             <a :href="'/blogContent/'+blog.blogId">
@@ -95,9 +95,9 @@ export default {
     },
     // 点赞
     thubmbClick(blog) {
-      console.log("username", this.user.username);
+      console.log("username", this.user);
       //判断是否登录
-      if (this.user.username != "" && this.user.username != undefined) {
+      if (this.user != "" && this.user != undefined) {
         // 登录的情况下
         // alert(blogId);
         axios
@@ -109,9 +109,13 @@ export default {
           })
           .then(response => {
             // 原来点赞数是这么做的，把blog整个对象传了进来，而不仅仅是blogId
-            blog.likeNum += 1;
-            console.log(blog);
-            this.$message.success("点赞 +1");
+            if (response.data.dataInfo != -1) {
+              blog.likeNum += 1;
+              console.log(blog);
+              this.$message.success("点赞 +1");
+            }else{
+              this.$message.warning("不可重复点赞!");
+            }
           });
       } else {
         this.$message.warning("请先登录!");
@@ -132,7 +136,7 @@ export default {
 .article {
   width: 850px;
   height: 200px;
-  background: #f8f8f8;
+  background: #fffffe;
   border-radius: 15px;
 }
 
@@ -256,7 +260,7 @@ export default {
   /* border: 1px solid red; */
   float: right;
   margin-top: 25px;
-  background: #f8f8f8;
+  background: #fffffe;
 }
 .recommend-read a {
   color: #777777;

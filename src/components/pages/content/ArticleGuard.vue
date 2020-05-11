@@ -76,6 +76,8 @@
           <span>点赞数({{item.likeNum}})</span>
         </div>
         <div class="content-list-link">
+                    <el-link type="primary">导出</el-link>
+
           <el-link type="primary">查看</el-link>
           <el-link type="danger">删除</el-link>
         </div>
@@ -276,7 +278,7 @@ export default {
   float: left;
   width: 1017px;
   /* height: 100px; */
-  background: #ffffff;
+  background: #fffffe;
 }
 .article-nav {
   width: 980px;

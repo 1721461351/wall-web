@@ -25,7 +25,7 @@ export default {
   /* margin-bottom: 20px; */
   width: 100%;
   height: 90px;
-  background:#f8f8f8;
+  background:#fffffe;
 }
 
 .foot1,.foot2{

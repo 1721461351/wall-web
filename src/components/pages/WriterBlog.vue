@@ -488,6 +488,7 @@ export default {
 /* markdown界面开始 */
 .markdown {
   margin-top: 10px;
+  border-radius: 0;
 }
 
 /* 弹出框 */

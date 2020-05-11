@@ -52,7 +52,7 @@ export default {
   /* border: 1px solid blue; */
   float: right;
   margin-top: 20px;
-  background: #f8f8f8;
+  background: #fffffe;
   /* margin-right: 50px; */
 }
 

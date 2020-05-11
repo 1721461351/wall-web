@@ -1,7 +1,9 @@
 <template>
-  <div>
+  <div class="login">
     <div class="app">
       <div class="login-form">
+                  <div class="login-title">沈农博客系统</div>
+
         <el-form
           :model="ruleForm"
           status-icon
@@ -22,19 +24,19 @@
           <el-form-item label prop="checkPass">
             <el-input
               type="password"
-              v-model="ruleForm.checkPass"
+              v-model="ruleForm.password"
               autocomplete="off"
               prefix-icon="iconfont icon-mima"
               placeholder="密码"
             ></el-input>
           </el-form-item>
-          <el-form-item label prop="age">
+          <!-- <el-form-item label prop="age">
             <el-input v-model.number="ruleForm.age" placeholder="验证码"></el-input>
-          </el-form-item>
+          </el-form-item> -->
           <el-form-item>
             <div class="btn-submit">
-              <el-button type="primary" @click="submitForm('ruleFormRef')">提交</el-button>
-              <el-button @click="resetForm('ruleFormRef')">重置</el-button>
+              <el-button type="primary" @click="submitForm('ruleFormRef')" style="width:350px;">登录</el-button>
+              <!-- <el-button @click="resetForm('ruleFormRef')">重置</el-button> -->
             </div>
           </el-form-item>
         </el-form>
@@ -44,6 +46,8 @@
 </template>
 
 <script>
+import axios from 'axios'
+axios.defaults.withCredentials=true;
 export default {
   name: "Login",
   data() {
@@ -89,6 +93,7 @@ export default {
         checkPass: "",
         age: ""
       },
+      token:'',
       rules: {
         //   这里对应el-form-item的prop属性
         username: [
@@ -121,6 +126,22 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
+          axios.post("http://127.0.0.1:9200/user/loginAuth",this.ruleForm)
+          .then(response=>{
+            console.log(response);
+            
+            console.log(response.data.dataInfo);
+            // 查询成功的情况下
+            if(response.data.dataInfo!=null&&response.data.dataInfo!=undefined){
+              // 设置token
+            this.token = response.data.dataInfo;
+             // 设置cookie
+            this.$cookie.set('user_token',response.data.dataInfo);
+            // 跳转界面
+            this.$router.push({path:"/"});
+            }
+           
+          })
           alert("submit!");
         } else {
           console.log("error submit !!");
@@ -150,22 +171,35 @@ resetForm:function(formName){
     // ruleFormRefReset(){
     //     console.log(this)
     // }
+  },
+
+  beforeCreate(){
+document.querySelector('body').setAttribute('style',' background: url(https://cn.bing.com/th?id=OHR.PascuaFlorida_EN-US1819624171_1920x1080.jpg&rf=LaDigue_1920x1080.jpg&pid=hp) no-repeat; background-size: 100% 100%; background-attachment: fixed;');
+  },
+  beforeDestroy(){
+    document.querySelector('body').setAttribute('style',' background: #000000');
+
   }
+
 };
 </script>
 
-<style>
-body {
+
+<style scoped>
+ body {
+  width: 100%;
+  height: 100%;
   margin: 0;
   padding: 0;
-  background: url(https://cn.bing.com/th?id=OHR.PascuaFlorida_EN-US1819624171_1920x1080.jpg&rf=LaDigue_1920x1080.jpg&pid=hp)
-    no-repeat;
+  /* background: url(https://cn.bing.com/th?id=OHR.PascuaFlorida_EN-US1819624171_1920x1080.jpg&rf=LaDigue_1920x1080.jpg&pid=hp)
+    no-repeat; */
   background-size: 100% 100%;
   background-attachment: fixed;
 }
 .app {
   width: 400px;
   height: 360px;
+  background: #ffffff;
   /* background: green; */
   border: 1px solid red;
   margin: 0 auto;
@@ -185,5 +219,11 @@ body {
   display: flex;
   box-sizing: border-box;
   justify-content: center;
+}
+.login-title{
+  margin-left: 140px;
+  margin-bottom: 30px;
+  font-weight: bold;
+  font-size: 20px;
 }
 </style>

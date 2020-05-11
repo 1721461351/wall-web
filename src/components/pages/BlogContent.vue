@@ -180,8 +180,11 @@ export default {
 </script>
 
 <style>
+body{
+  background: #f8f8f8;
+}
 .el-menu {
-  background-color: #f8f8f8;
+  background-color: #fffffe;
   float: right;
 }
 
@@ -202,14 +205,14 @@ export default {
 .el-header,
 .el-footer,
 .el-main {
-  background-color: #f8f8f8;
+  background-color: #fffffe;
   color: #333;
   /* text-align: center; */
   line-height: 60px;
 }
 
 .el-main {
-  background-color: #f8f8f8;
+  background-color: #fffffe;
   color: #333;
   text-align: center;
   line-height: 160px;
@@ -238,7 +241,7 @@ body > .el-container {
 .article {
   width: 850px;
   height: 200px;
-  background: #f8f8f8;
+  background: #fffffe;
   border-radius: 15px;
 }
 
@@ -361,7 +364,7 @@ body > .el-container {
   /* border: 1px solid red; */
   float: right;
   margin-top: 25px;
-  background: #f8f8f8;
+  background: #fffffe;
 }
 .recommend-read a {
   color: #777777;
@@ -401,8 +404,10 @@ ul {
   width: 1200px;
   margin: 20px auto;
   margin-bottom: 0px;
-  background: #f8f8f8;
+  background: #fffffe;
   height: 30px;
+    border: 1px solid #E6E2E2;
+  box-shadow: 0 1px 4px 0 #E6E2E2;
 }
 
 .title div {
@@ -416,15 +421,17 @@ ul {
 
 /* 文章内容 */
 .a-content {
-  width: 850px;
+  width: 846px;
   /* height: 800px; */
-  background: #f8f8f8;
+  background: #fffffe;
   float: left;
   margin-top: 20px;
+    border: 1px solid #E6E2E2;
+  box-shadow: 0 1px 4px 0 #E6E2E2;
 }
 /* 评论 */
 .comment {
-  background: #ffffff;
+  background: #fffffe;
   width: 850px;
   margin-top: 20px;
 }
@@ -436,10 +443,12 @@ ul {
 }
 /* 作者信息 */
 .author-info {
+    border: 1px solid #E6E2E2;
+  box-shadow: 0 1px 4px 0 #E6E2E2;
   width: 340px;
   /* height: 340px; */
   /* border: 1px solid red; */
-  background: #f8f8f8;
+  background: #fffffe;
   float: left;
   margin-top: 20px;
   margin-left: 10px;
@@ -528,8 +537,8 @@ ul {
   width: 850px;
   height: 60px;
   /* background: red; */
-  border-bottom: 1px solid #f8f8f8;
-  background: #ffffff;
+  border-bottom: 1px solid #fffffe;
+  background: #fffffe;
   /* float: left; */
   clear: both;
 }
@@ -537,8 +546,10 @@ ul {
   width: 800px;
   height: 30px;
   margin: 0 auto;
- background: #ffffff;
+ background: #f8f8f8  ;
   margin-top: 10px;
+    /* border: 1px solid #E6E2E2;
+  box-shadow: 0 1px 4px 0 #E6E2E2; */
 }
 
 .content-edit div{
@@ -568,5 +579,9 @@ ul {
 }
 .b-content-info {
   display: inline-block;
+}
+.content-info img{
+  /* 加上此标签，就能够使图片自适应了 */
+  max-width: 100%;
 }
 </style>

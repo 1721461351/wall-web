@@ -131,7 +131,7 @@ li {
 }
 
 .content {
-  background: #ffffff;
+  background: #fffffe;
   width: 1200px;
   margin: 0 auto;
   border: 1px solid red;
@@ -154,7 +154,7 @@ li {
   float: left;
   width: 1017px;
   /* height: 100px; */
-  background: #ffffff;
+  background: #fffffe;
 }
 .article-nav {
   width: 980px;

@@ -1,10 +1,10 @@
 <template>
   <div>
     <!-- <el-container> -->
-    <div>
-      <el-header>
+    <div v-loading="loading" element-loading-text="拼命加载中" element-loading-spinner="el-icon-loading">
+      <el-header class="soild-shadow">
         <!-- 导航栏 -->
-        <home-header @selectbycategoryid="selectByCategoryId"></home-header>
+        <home-header @selectbycategoryid="selectByCategoryId" :user="this.user"></home-header>
         <!-- <slide-and-type></slide-and-type> -->
       </el-header>
 
@@ -26,16 +26,34 @@
       <slide-and-type></slide-and-type>
 
       <!-- 网站数据 -->
-      <div class="data">
+      <div class="data soild-shadow">
         <div class="data-title">网站信息</div>
         <ul>
-          <li>文章总数:</li>
-          <li>标签总数:</li>
-          <li>分类总数:</li>
-          <li>留言数量:</li>
-          <li>在线人数:</li>
-          <li>运行天数:</li>
-          <li>最后更新时间:</li>
+          <li>
+            <span class="el-icon-document" style="padding-right:10px"></span>
+            <span>文章总数:</span>
+            {{webInfo.blogTotal}}
+          </li>
+          <li>
+            <span class="el-icon-info" style="padding-right:10px"></span>
+            <span>标签总数:</span>
+            {{webInfo.tagTotal}}
+          </li>
+          <li>
+            <span class="el-icon-data-analysis" style="padding-right:10px"></span>
+            <span>分类总数:</span>
+            {{webInfo.typeTotal}}
+          </li>
+          <li>
+            <span class="el-icon-s-custom" style="padding-right:10px"></span>
+            <span>总人数:</span>
+            {{webInfo.userTotal}}
+          </li>
+          <li>
+            <span class="el-icon-s-opportunity" style="padding-right:10px"></span>
+            <span>在线人数:</span>
+            {{webInfo.onlineTotal}}
+          </li>
         </ul>
       </div>
       <!-- 写文章+分页-->
@@ -70,12 +88,18 @@ export default {
   name: "Home",
   data() {
     return {
+      loading: true,
+      fullscreenLoading: false,
+      webInfo: {}, // 文章详情信息
       slideShow: [
         "https://jwc.syau.edu.cn/img/1.JPG",
         "https://jwc.syau.edu.cn/img/3.jpg"
       ],
       blogList: [],
-      user: { username: "2016188023" },
+      token: "",
+      user: {
+        username: ""
+      },
       selectContent: {
         page: 1,
         size: 5,
@@ -92,21 +116,44 @@ export default {
   // 监听器
   watch: {
     // 监听某一个对象的值发送改变，而做出相应的操作
-    selectContent: {
-      // 参数的第一个值为改变值的新值，第二个为旧值。这里是对象
-      handler(newname, old) {
-        console.log("new", newname);
-        console.log("old", old);
-        // 发送请求
+    // selectContent: {
+    //   // 参数的第一个值为改变值的新值，第二个为旧值。这里是对象
+    //   handler(newname, old) {
+    //     console.log("new", newname);
+    //     console.log("old", old);
+    //     // 发送请求
+    //     axios
+    //       .get("http://localhost:9200/blog/list", {
+    //         params: {
+    //           page: this.selectContent.page,
+    //           size: this.selectContent.size,
+    //           categoryId: this.selectContent.categoryId
+    //         }
+    //       })
+    //       .then(this.getData);
+
+    //   },
+    //   // deep为深度监听，设置deep为true可以监听到对象属性
+    //   deep: true,
+    //   // immediate可以在第一次的时候就能监听到数据的改变
+    //   immediate: true
+    // },
+    token: {
+      handler(newname, oldname) {
+        this.token = this.$cookie.get("user_token");
+        // alert(this.token);
+        // 根据token获取用户信息
         axios
-          .get("http://localhost:9200/blog/list", {
+          .get("http://localhost:9200/user/login", {
             params: {
-              page: this.selectContent.page,
-              size: this.selectContent.size,
-              categoryId: this.selectContent.categoryId
+              token: this.token
             }
           })
-          .then(this.getData);
+          .then(response => {
+            console.log(response);
+            this.user = response.data.dataInfo;
+            console.log("user", this.user);
+          });
       },
       // deep为深度监听，设置deep为true可以监听到对象属性
       deep: true,
@@ -115,16 +162,51 @@ export default {
     }
   },
   mounted() {
-    // alert("mounted");
-    // axios
-    //   .get("http://localhost:9200/blog/list", {
-    //     params: {
-    //       page: this.selectContent.page,
-    //       size: this.selectContent.size
-    //     }
-    //   })
-    //   .then(this.getData);
-    // console.log(this.blogList);
+    // 获取类型的第几个
+    alert(this.$route.path.charAt(this.$route.path.length - 1));
+    // 判断当前界面的类型
+    if (this.$route.path == "/") {
+      axios
+        .get("http://localhost:9200/blog/list", {
+          params: {
+            page: this.selectContent.page,
+            size: this.selectContent.size,
+            categoryId: this.selectContent.categoryId
+          }
+        })
+        .then(this.getData);
+    } else {
+      axios
+        .get("http://localhost:9200/blog/list", {
+          params: {
+            page: this.selectContent.page,
+            size: this.selectContent.size,
+            categoryId: this.$route.path.charAt(this.$route.path.length - 1)
+          }
+        })
+        .then(this.getData);
+    }
+    // 检测登录状态
+    this.token = this.$cookie.get("user_token");
+    // alert(this.token);
+    // 根据token获取用户信息
+    axios
+      .get("http://localhost:9200/user/login", {
+        params: {
+          token: this.token
+        }
+      })
+      .then(response => {
+        console.log(response);
+        this.user = response.data.dataInfo;
+        console.log("user", this.user);
+      });
+
+    // 获取网站信息
+    axios.get("http://localhost:9200/blog/webinfo").then(response => {
+      console.log(response);
+      this.webInfo = response.data.dataInfo;
+    });
   },
 
   // updated() {
@@ -153,12 +235,20 @@ export default {
     // 喜欢数
     getlikenum(likeNum) {
       // alert("喜欢" + likeNum);
-
     },
     // 根据分类进行查询
     selectByCategoryId(categoryId) {
       // alert(categoryId);
       this.selectContent.categoryId = categoryId;
+      axios
+        .get("http://localhost:9200/blog/list", {
+          params: {
+            page: this.selectContent.page,
+            size: this.selectContent.size,
+            categoryId: this.selectContent.categoryId
+          }
+        })
+        .then(this.getData);
     },
     getpage(currentPage) {
       // alert("当前页" + currentPage);
@@ -181,6 +271,7 @@ export default {
         // console.log(this.blogList);
         // 总页数
         this.total = response.dataInfo.total;
+        this.loading = false;
       }
     }
   }
@@ -188,8 +279,16 @@ export default {
 </script>
 
 <style>
+body {
+  background: #f8f8f8;
+}
+/* 图片阴影加边框 */
+.soild-shadow {
+  border: 1px solid #e6e2e2;
+  box-shadow: 0 1px 4px 0 #e6e2e2;
+}
 .el-menu {
-  background-color: #f8f8f8;
+  background-color: #fffffe;
   float: right;
 }
 
@@ -210,14 +309,14 @@ export default {
 .el-header,
 .el-footer,
 .el-main {
-  background-color: #f8f8f8;
+  background-color: #fffffe;
   color: #333;
   /* text-align: center; */
   line-height: 60px;
 }
 
 .el-main {
-  background-color: #f8f8f8;
+  background-color: #fffffe;
   color: #333;
   text-align: center;
   line-height: 160px;
@@ -246,7 +345,7 @@ body > .el-container {
 .article {
   width: 850px;
   height: 200px;
-  background: #f8f8f8;
+  background: #fffffe;
   border-radius: 15px;
 }
 
@@ -369,7 +468,7 @@ body > .el-container {
   /* border: 1px solid red; */
   float: right;
   margin-top: 25px;
-  background: #f8f8f8;
+  background: #fffffe;
 }
 .recommend-read a {
   color: #777777;
@@ -408,9 +507,11 @@ ul {
 .scrolltext-title {
   width: 1200px;
   height: 30px;
-  background: #f8f8f8;
+  background: #fffffe;
   margin: 20px auto;
   margin-bottom: 0px;
+  border: 1px solid #e6e2e2;
+  box-shadow: 0 1px 4px 0 #e6e2e2;
 }
 
 .scrolltext-content {
@@ -423,9 +524,10 @@ ul {
 /* 网站统计 */
 .data {
   width: 340px;
-  height: 200px;
+  height: 220px;
   /* background: red; */
-  background: #f8f8f8;
+  background: #fffffe;
+  border-radius: 8px;
 
   margin-right: 60px;
   /* margin: 0 auto;  */
@@ -433,5 +535,11 @@ ul {
   /* margin-right: 500px; */
   float: right;
   /* right: 0px; */
+}
+/* webinfo */
+.data li {
+  /* display:block; */
+  /* background: aquamarine  ; */
+  padding-top: 10px;
 }
 </style>

@@ -1,6 +1,8 @@
 <template>
   <div id="app">
-    <router-view/>
+  <!-- <vue-particle-line> -->
+      <router-view />
+    <!-- </vue-particle-line> -->
   </div>
 </template>
 
